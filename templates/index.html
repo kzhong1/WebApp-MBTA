@@ -1,13 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% from "_formhelpers.html" import render_field %}
+{% block content %}
 
-    <title>Amazing app to help you find nearest MBTA station</title>
-  </head>
-  <body>
-      <h1>Hi there & I hope you are having a great day!</h1>
-  </body>
-</html>
+    <h1 class="hello" style="font-size: xxx-large;">Welcome to the coolest website to help you find the nearest MBTA station near you!</h1>
+    <br><br><br>
+    <form method=post>
+        <dl>
+            <p style="font-size: x-large;">Type in your current location to find the nearest station & whether or not it is wheelchair accessible or not:</p>
+            <p>{{ render_field(form.place_name) }} </p>
+        </dl>
+        <p><input type=submit value=submit style="background-color: #e9601a; color: white; display: inline-block;">
+      </form>
+{% endblock %}
