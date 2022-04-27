@@ -2,7 +2,7 @@ from operator import ge
 import urllib.request 
 import json
 from pprint import pprint
-from API_KEY.config import MAPQUEST_API_KEY, MBTA_API_KEY
+from config import MAPQUEST_API_KEY, MBTA_API_KEY
 
 def get_json(url):
     """
@@ -49,10 +49,12 @@ def get_nearest_station(latitude, longitude):
 
     url = f'https://api-v3.mbta.com/stops?api_key={MBTA_API_KEY}&sort=distance&filter%5Blatitude%5D={latitude}&filter%5Blongitude%5D={longitude}'
     response_data = get_json(url)
-    # print(response_data)
 
-    station_name = response_data['data'][0]['attributes']['name']
-    wheelchair_accessible = response_data['data'][0]['attributes']['wheelchair_boarding']
+    if response_data['data'] != []:
+        station_name = response_data['data'][0]['attributes']['name']
+        wheelchair_accessible = response_data['data'][0]['attributes']['wheelchair_boarding']
+    else:
+        return(f'There is no information on this place')
 
     if wheelchair_accessible == 2: 
         wheelchair_accessible = 'This station is not wheelchair accessible.'
@@ -86,6 +88,12 @@ def main():
     # print(get_lat_long('Babson%20College'))
 
     address = '656 Tremont St Boston'
+    address_in_format = address.replace(' ','%20')
+    address = '305 Newbury St Boston'
+    address_in_format = address.replace(' ','%20')
+    address = '14 Huntington Ave Boston'
+    address_in_format = address.replace(' ','%20')
+    address = 'Bedford St New York'
     address_in_format = address.replace(' ','%20')
 
     # lat_long = get_lat_long(address)
