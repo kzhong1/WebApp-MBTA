@@ -1,22 +1,36 @@
-from flask import Flask, render_template, request #TODO I don't know why Flask literally is not working, I've downaloded it so many times & redownlaoded it
+
+from flask import Flask, redirect, url_for, request, render_template
+from forms import PlaceForm
 from mbta_helper import find_stop_near
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return render_template("index.html")
 
-@app.route('/mbta_station/', methods=["GET", "POST"])
-def closest_mbta_station(): 
-    if request.method == "POST":
-        place_name = request.form["Location"]
-        find_stop = find_stop_near(place_name)
+@app.route('/', methods=['GET', 'POST'])
+def index_page():
+    form  = PlaceForm(request.form)
+    if request.method == 'POST' and form.validate():
+        address = form.place_name.data
+        address_in_format = address.replace(' ','%20')
 
-        return render_template("MBTA_result.html", location=place_name, MBTA_stop=find_stop)
+        nearest_stop = find_stop_near(address_in_format)
 
-    return render_template("MBTA__first_form.html")
+        return redirect(url_for('mbta_page', address = address, nearest_stop=nearest_stop))
+    return render_template('index.html', form=form)
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+@app.route('/mbta_station/<address>/<nearest_stop>')
+def mbta_page(address, nearest_stop):
+    return render_template('mbta.html', address=address, nearest_stop=nearest_stop)
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('page_not_found.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    return render_template('error.html')
+
+    
+if __name__ == "__main__":
+    app.run()
