@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block title %}Result{% endblock %}
+{% block content %}
+
+    <div class="result" style="margin-top: 10%;">
+        <div style="font-size: x-large; border-radius: 25px; border: 2px solid #e9601a; padding: 20px; width: 20%; height: 15%; margin-left: 38%;">
+            {{address}}
+        </div>
+        <br>
+        <div style="font-size: x-large; border-radius: 25px; background: #73AD21; padding: 20px; width: 20%; height: 15%; margin-left: 38%; color: white;">
+            {{nearest_stop}}
+        </div>
+
+    </div>
+    <br><br>
+    <a href="/" style="font-size: xx-large; color: #73AD21;">Go Back</a>
+
+{% endblock %}
